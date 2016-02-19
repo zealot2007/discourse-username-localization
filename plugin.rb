@@ -26,6 +26,13 @@ after_initialize do
     end
   end
 
+  def UserNameSuggester.sanitize_username(name)
+      name.gsub!(UsernameValidator::CONFUSING_EXTENSIONS, "_")
+      name.gsub!(/[^\u4e00-\u9fa5_a-zA-Z0-9]+/, "")
+      name.gsub!(/[-_.]{2,}/, "_")
+      name
+  end
+
   UsernameValidator.class_eval do
     def username_char_valid?
       return unless errors.empty?
